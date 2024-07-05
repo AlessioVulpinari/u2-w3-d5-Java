@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserService {
 
@@ -26,8 +28,15 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+
+    public User findById(UUID userId) {
+        return this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+    }
+
     public User findByEmail(String email) {
         return this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(email));
     }
+
+
 
 }

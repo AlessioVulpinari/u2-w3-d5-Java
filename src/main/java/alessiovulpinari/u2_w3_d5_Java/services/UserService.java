@@ -41,15 +41,20 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public User findByIdAndUpdate(UUID employeeId, UserPayload body)
+    public User findByIdAndUpdate(UUID userId, UserPayload body)
     {
-        User found = findById(employeeId);
+        User found = findById(userId);
         found.setEmail(body.email());
         found.setUsername(body.username());
         found.setName(body.name());
         found.setSurname(body.surname());
         found.setPassword(passwordEncoder.encode(body.password()));
         return userRepository.save(found);
+    }
+
+    public void findByIdAndDelete(UUID userId) {
+        User found = findById(userId);
+        this.userRepository.delete(found);
     }
 
     public User findById(UUID userId) {

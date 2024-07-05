@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -53,5 +54,12 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
         // Passiamo al prossimo check nella lista dei filtri
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // Uso questo metodo per specificare in quali situazioni NON USARE I FILTRI (QUELLI DI SOPRA)
+        // Posso ad esempio escludere dal controllo del filtro tutti gli endpoint dentro il controller /api/auth
+        return new AntPathMatcher().match("/api/auth/**", request.getServletPath());
     }
 }

@@ -1,8 +1,8 @@
 package alessiovulpinari.u2_w3_d5_Java.security;
 
-import alessiovulpinari.u2_w3_d5_Java.entities.User;
+import alessiovulpinari.u2_w3_d5_Java.entities.GenericUser;
 import alessiovulpinari.u2_w3_d5_Java.exceptions.UnathorizedException;
-import alessiovulpinari.u2_w3_d5_Java.services.UserService;
+import alessiovulpinari.u2_w3_d5_Java.services.GenericUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private JWTTools jwtTools;
 
     @Autowired
-    private UserService userService;
+    private GenericUserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -46,7 +46,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         String employeeId = jwtTools.extractIdFromToken(accessToken);
 
         // Cerchiamo l'id dello user con il suo service
-        User currentUser = userService.findById(UUID.fromString(employeeId));
+        GenericUser currentUser = userService.findById(UUID.fromString(employeeId));
 
         // Trovato lo user lo aggiungiamo al security context questo equivale ad 'associare' lo user autenticato alla richiesta corrente
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());

@@ -1,6 +1,6 @@
 package alessiovulpinari.u2_w3_d5_Java.security;
 
-import alessiovulpinari.u2_w3_d5_Java.entities.User;
+import alessiovulpinari.u2_w3_d5_Java.entities.GenericUser;
 import alessiovulpinari.u2_w3_d5_Java.exceptions.UnathorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -15,7 +15,7 @@ public class JWTTools {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String createToken(User user) {
+    public String createToken(GenericUser user) {
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis())) // Data di creazione token in millisecondi
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 10)) // Data di scadenza token in millisecondi

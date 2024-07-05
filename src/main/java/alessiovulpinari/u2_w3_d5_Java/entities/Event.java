@@ -37,14 +37,14 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "id_utente")
-    private User user;
+    private Manager manager;
 
-    public Event(String title, String description, LocalDate date, String location, int maxParticipants, User user) {
+    public Event(String title, String description, LocalDate date, String location, int maxParticipants, Manager manager) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.location = location;
         this.maxParticipants = maxParticipants;
-        this.user = user;
+        this.manager = manager;
     }
 }

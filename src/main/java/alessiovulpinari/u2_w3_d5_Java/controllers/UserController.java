@@ -1,8 +1,8 @@
 package alessiovulpinari.u2_w3_d5_Java.controllers;
 
-import alessiovulpinari.u2_w3_d5_Java.entities.User;
+import alessiovulpinari.u2_w3_d5_Java.entities.GenericUser;
 import alessiovulpinari.u2_w3_d5_Java.payloads.UserPayload;
-import alessiovulpinari.u2_w3_d5_Java.services.UserService;
+import alessiovulpinari.u2_w3_d5_Java.services.GenericUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,35 +17,35 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private GenericUserService userService;
 
     @GetMapping("/me")
-    public User getMyProfile(@AuthenticationPrincipal User currentUser) {
+    public GenericUser getMyProfile(@AuthenticationPrincipal GenericUser currentUser) {
         return currentUser;
     }
 
     @PutMapping("/me")
-    public User updateMyProfile(@AuthenticationPrincipal User currentUser, @RequestBody UserPayload body) {
+    public GenericUser updateMyProfile(@AuthenticationPrincipal GenericUser currentUser, @RequestBody UserPayload body) {
         return this.userService.findByIdAndUpdate(currentUser.getUserId(), body);
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size)
+    public Page<GenericUser> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size)
     {
         return this.userService.getUsers(page, size);
     }
 
     @GetMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User findById(@PathVariable UUID userId)
+    public GenericUser findById(@PathVariable UUID userId)
     {
         return this.userService.findById(userId);
     }
 
     @PutMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User findByIdAndUpdate(@PathVariable UUID userId, @RequestBody UserPayload body) {
+    public GenericUser findByIdAndUpdate(@PathVariable UUID userId, @RequestBody UserPayload body) {
         return this.userService.findByIdAndUpdate(userId, body);
     }
 

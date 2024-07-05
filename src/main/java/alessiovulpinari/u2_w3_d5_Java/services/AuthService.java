@@ -1,6 +1,6 @@
 package alessiovulpinari.u2_w3_d5_Java.services;
 
-import alessiovulpinari.u2_w3_d5_Java.entities.User;
+import alessiovulpinari.u2_w3_d5_Java.entities.GenericUser;
 import alessiovulpinari.u2_w3_d5_Java.exceptions.UnathorizedException;
 import alessiovulpinari.u2_w3_d5_Java.payloads.UserLoginDTO;
 import alessiovulpinari.u2_w3_d5_Java.security.JWTTools;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private UserService userService;
+    private GenericUserService userService;
 
     @Autowired
     private PasswordEncoder bcrypt;
@@ -22,7 +22,7 @@ public class AuthService {
 
     public String authenticationAndTokenGeneration(UserLoginDTO body)
     {
-        User found = this.userService.findByEmail(body.email());
+        GenericUser found = this.userService.findByEmail(body.email());
 
         if (bcrypt.matches(body.password(), found.getPassword())) return jwtTools.createToken(found);
 

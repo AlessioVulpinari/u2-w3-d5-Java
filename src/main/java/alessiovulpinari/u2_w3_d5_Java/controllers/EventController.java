@@ -1,0 +1,29 @@
+package alessiovulpinari.u2_w3_d5_Java.controllers;
+
+import alessiovulpinari.u2_w3_d5_Java.exceptions.BadRequestException;
+import alessiovulpinari.u2_w3_d5_Java.payloads.EventPayload;
+import alessiovulpinari.u2_w3_d5_Java.payloads.EventPostResponseDTO;
+import alessiovulpinari.u2_w3_d5_Java.services.EventService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("api/event")
+public class EventController {
+
+    @Autowired
+    private EventService eventService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('EVENT_MANAGER')")
+    public EventPostResponseDTO postNewEvent(@RequestBody @Validated EventPayload body, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) throw new BadRequestException(bindingResult.getAllErrors());
+        return new EventPostResponseDTO(this.eventService.saveEvent(body).getEventId());
+    }
+
+}

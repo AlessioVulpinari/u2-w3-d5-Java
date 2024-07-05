@@ -3,7 +3,6 @@ package alessiovulpinari.u2_w3_d5_Java.entities;
 import alessiovulpinari.u2_w3_d5_Java.enums.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;

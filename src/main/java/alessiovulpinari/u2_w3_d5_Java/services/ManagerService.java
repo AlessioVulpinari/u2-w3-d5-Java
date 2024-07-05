@@ -1,14 +1,18 @@
 package alessiovulpinari.u2_w3_d5_Java.services;
 
+import alessiovulpinari.u2_w3_d5_Java.entities.GenericUser;
 import alessiovulpinari.u2_w3_d5_Java.entities.Manager;
 import alessiovulpinari.u2_w3_d5_Java.entities.User;
 import alessiovulpinari.u2_w3_d5_Java.exceptions.BadRequestException;
+import alessiovulpinari.u2_w3_d5_Java.exceptions.NotFoundException;
 import alessiovulpinari.u2_w3_d5_Java.payloads.UserPayload;
 import alessiovulpinari.u2_w3_d5_Java.repositories.GenericUserRepository;
 import alessiovulpinari.u2_w3_d5_Java.repositories.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class ManagerService {
@@ -31,5 +35,9 @@ public class ManagerService {
 
         Manager newUser = new Manager(body.username(), body.name(), body.surname(), passwordEncoder.encode(body.password()), body.email());
         return managerRepository.save(newUser);
+    }
+
+    public Manager findById(UUID userId) {
+        return this.managerRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
     }
 }

@@ -32,14 +32,13 @@ public class ExceptionsHandler {
     public ErrorPayload handleUnauthorized(UnathorizedException err) {
         return new ErrorPayload(err.getMessage(), LocalDateTime.now());
     }
-
+    
     // Errore 403
     @ExceptionHandler(AuthorizationDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorPayload handleForbidden(AuthorizationDeniedException ex) {
+    public ErrorPayload handleForbidden(ForbiddenException ex) {
         return new ErrorPayload("Non hai accesso a questa funzionalità", LocalDateTime.now());
     }
-
 
     // Errore 404
     @ExceptionHandler(NotFoundException.class)

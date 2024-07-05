@@ -31,13 +31,13 @@ public class UserService {
     }
 
     public User saveUser(UserPayload body) {
-        this.userRepository.findByEmail(body.email()).ifPresent(employee ->
+        this.userRepository.findByEmail(body.email()).ifPresent(user ->
         {throw new BadRequestException("Esiste già un utente con questa email: " + body.email());});
 
-        this.userRepository.findByUsername(body.username()).ifPresent(employee -> {
+        this.userRepository.findByUsername(body.username()).ifPresent(user -> {
             throw new BadRequestException("Esiste già un utente con questo username: " + body.username());});
 
-        User newUser = new User(body.username(), body.name(), body.surname(), body.email(), passwordEncoder.encode(body.password()));
+        User newUser = new User(body.username(), body.name(), body.surname(), passwordEncoder.encode(body.password()), body.email());
         return userRepository.save(newUser);
     }
 

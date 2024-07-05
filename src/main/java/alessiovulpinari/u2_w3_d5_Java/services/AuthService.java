@@ -25,6 +25,7 @@ public class AuthService {
         User found = this.userService.findByEmail(body.email());
 
         if (bcrypt.matches(body.password(), found.getPassword())) return jwtTools.createToken(found);
+
         else throw new UnathorizedException("Credenziali non corette");
     }
 }

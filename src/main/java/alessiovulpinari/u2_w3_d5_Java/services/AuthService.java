@@ -20,8 +20,8 @@ public class AuthService {
     @Autowired
     private JWTTools jwtTools;
 
-    public String authenticationAndTokenGeneration(UserLoginDTO body) {
-
+    public String authenticationAndTokenGeneration(UserLoginDTO body)
+    {
         User found = this.userService.findByEmail(body.email());
 
         if (bcrypt.matches(body.password(), found.getPassword())) return jwtTools.createToken(found);

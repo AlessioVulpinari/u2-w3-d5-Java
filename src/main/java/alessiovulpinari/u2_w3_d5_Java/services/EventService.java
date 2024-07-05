@@ -2,11 +2,9 @@ package alessiovulpinari.u2_w3_d5_Java.services;
 
 import alessiovulpinari.u2_w3_d5_Java.entities.Event;
 import alessiovulpinari.u2_w3_d5_Java.entities.GenericUser;
-import alessiovulpinari.u2_w3_d5_Java.entities.Manager;
 import alessiovulpinari.u2_w3_d5_Java.exceptions.ForbiddenException;
 import alessiovulpinari.u2_w3_d5_Java.exceptions.NotFoundException;
 import alessiovulpinari.u2_w3_d5_Java.payloads.EventPayload;
-import alessiovulpinari.u2_w3_d5_Java.payloads.UserPayload;
 import alessiovulpinari.u2_w3_d5_Java.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +20,10 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public Event saveEvent(EventPayload body) {
+    public Event saveEvent(EventPayload body, GenericUser currentUser) {
 
         Event event = new Event(body.title(), body.description(), body.date(),
-                body.location(), body.maxParticipants(), managerService.findById(body.managerId()));
+                body.location(), body.maxParticipants(), managerService.findById(currentUser.getUserId()));
 
         return eventRepository.save(event) ;
     }
@@ -36,8 +34,9 @@ public class EventService {
 
     public Event findByIdAndUpdate(UUID eventId, EventPayload body, GenericUser currentUser)
     {
-        if (!currentUser.getUserId().equals(body.managerId())) throw new ForbiddenException("Non è un tuo evento non puoi modificarlo!");
         Event eventFound = this.findById(eventId);
+        if (!currentUser.getUserId().equals(eventFound.getManager().getUserId())) throw new ForbiddenException("Non è un tuo evento non puoi modificarlo!");
+
         eventFound.setTitle(body.title());
         eventFound.setDescription(body.description());
         eventFound.setDate(body.date());

@@ -27,9 +27,9 @@ public class EventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('EVENT_MANAGER')")
-    public EventPostResponseDTO postNewEvent(@RequestBody @Validated EventPayload body, BindingResult bindingResult) {
+    public EventPostResponseDTO postNewEvent(@RequestBody @Validated EventPayload body, BindingResult bindingResult, @AuthenticationPrincipal GenericUser currentUser) {
         if (bindingResult.hasErrors()) throw new BadRequestException(bindingResult.getAllErrors());
-        return new EventPostResponseDTO(this.eventService.saveEvent(body).getEventId());
+        return new EventPostResponseDTO(this.eventService.saveEvent(body, currentUser).getEventId());
     }
 
     @PutMapping("/me/{eventId}")
